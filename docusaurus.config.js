@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Cz Site',
+  title: 'Cz 博客',
   tagline: 'Dinosaurs are cool',
   favicon: 'img/favicon.ico',
 
@@ -57,13 +57,25 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
+      announcementBar: {
+        id: 'support_us',
+        content: '⭐️ 如果这个网站能帮助到你，欢迎给一个star支持作者  <a target="_blank" rel="noopener noreferrer" href="https://github.com/Duke-MacOs/blog">GitHub</a>',
+        backgroundColor: '#fafbfc',
+        textColor: '#091E42',
+        isCloseable: true,
+      }, 
       navbar: {
-        title: 'Cz Site',
+        title: 'Cz 博客',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
         },
         items: [
+          {
+            href: 'https://github.com/Duke-MacOs/blog',
+            label: 'GitHub',
+            position: 'right',
+          },
           // {
           //   type: 'doc',
           //   docId: 'intro',
