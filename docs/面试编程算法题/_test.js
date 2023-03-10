@@ -1,41 +1,49 @@
-class Scheduler {
-    limit = 2;
-    queue = [];
-    currentCount = 0;
+function flatten(arr, id) {
+	const map = {};
 
-    add(fn) {
-        this.queue.push(fn);
-        this.run();
-    }
+	const dps = (arr, parents) => {
+		if(!arr) return;
+		const _parents = [...parents];
+		for(let i = 0; i < arr.length; i++) {
+			const obj = arr[i];
+			const objId = obj.id;
+			const children = obj.children;
 
-    run() {
-        while(this.queue.length !== 0 && this.currentCount < this.limit) {
-            const fn = this.queue.shift();
-            this.currentCount++;
-            fn().finally(() => {
-                this.complete();
-            })
-        }
-    }
+			map[objId] = _parents;
 
-    complete() {
-        this.currentCount--;
-        this.run();
-    }
+			dps(children, [...parents, objId]);
+		}
+	}
+
+	dps(arr, []);
+
+    console.log(map);
+
+	return map[id]
 }
 
+var tree = [{
+	id: 1,
+    name: '11',
+	children: [{
+		id: 2,
+        name: '22',
+		children: [{
+			id: 3,
+		}, {
+			id: 4
+		}]
+	}]
+}, {
+	id: 5,
+	children: [
+		{id: 6}
+	],
+}, {
+	id: 7,
+	children: [
+		{id: 8}
+	]
+}]
 
-var scheduler = new Scheduler();
-var print = (str, time) => {
-    return () => new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log(Date(), str);
-            resolve();
-        }, time)
-    })
-}
-
-scheduler.add(print(1, 1000)); // 1s 后打印 1
-scheduler.add(print(2, 2000)); // 2s 后打印 2
-scheduler.add(print(3, 3000)); // 4s 后打印 3
-scheduler.add(print(4, 4000)); // 6s 后打印 4
+console.log(flatten(tree, 2));
