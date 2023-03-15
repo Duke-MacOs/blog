@@ -1,3 +1,27 @@
+# 实现 arrange
+实现一个任务执行控制函数，支持 do，wait, waitFirst, execute 四种函数，具体的执行内容见测试用例
+
+## 测试用例
+```javascript
+arrange('William').execute(); // William is notified
+
+arrange('William').do('commit').execute();
+// William is notified
+// Start to commit
+
+arrange('William').wait(5).do('commit').execute();
+// William is notified
+// 等待 5 s
+// Start to commit
+
+arrange('William').waitFirst(5).do('push').execute();
+// 等待 5s
+// William is notified
+// Start to push
+```
+
+## 代码实现
+```javascript
 var arrange = (() => {
     const queue = [];
     let isLocked = false;
@@ -24,7 +48,6 @@ var arrange = (() => {
                 run();
             }, time * 1000)
         })
-        return fn;
     }
 
     fn.waitFirst = (time) => {
@@ -34,34 +57,18 @@ var arrange = (() => {
                 isLocked = false;
                 run();
             }, time * 1000)
-        });
-        return fn;
+        })
     }
 
     fn.do = (str) => {
         queue.push(() => {
             console.log(`Start to ${str}`);
-        });
-        return fn;
+        })
     }
 
-    fn.execute = run;
+    fn.execute = run();
 
     return fn;
 })();
 
-// arrange('William').execute(); // William is notified
-
-// arrange('William').do('commit').execute();
-// // William is notified
-// // Start to commit
-
-// arrange('William').wait(5).do('commit').execute();
-// // William is notified
-// // 等待 5 s
-// // Start to commit
-
-arrange('William').waitFirst(5).do('push').execute();
-// 等待 5s
-// William is notified
-// Start to push
+```
