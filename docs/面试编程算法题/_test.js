@@ -1,29 +1,15 @@
-function addMethod(target, name, fn) {
-    const old = target[name];
-    target[name] = (...args) => {
-     if(args.length === fn.length) {
-         return fn.apply(this, args);
-     }else if(typeof old === 'function') {
-         return old.apply(this, args);
-     }
+const myInstanceof = (target, proto) => {
+    let prototype = target.__proto__;
+    while(prototype) {
+        if(prototype === proto.prototype) return true;
+        prototype = prototype.__proto__;
     }
- }
+    return false;
+}
 
-const searcher = {};
-addMethod(searcher, 'find', function() {
-    console.log('查询所有用户');
-});
-
-addMethod(searcher, 'find', function(firstName, lastName) {
-    console.log('根据全名查询用户');
-});
-
-addMethod(searcher, 'find', function(id) {
-    console.log('根据 id 查询用户');
-})
-
-
-
-searcher.find();
-searcher.find(123);
-searcher.find('chen', 'zhe');
+function Foo () {}
+var f = new Foo()
+console.log(myInstanceof(f, Foo)); // true
+console.log(myInstanceof(f, Object)); // true
+console.log(myInstanceof([1,2], Array)); // true
+console.log(myInstanceof({ a: 1 }, Array)); // false
