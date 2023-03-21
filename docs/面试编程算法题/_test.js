@@ -1,33 +1,8 @@
-class EventEmitter {
-    map = new Map();
-
-    $on(name, fn) {
-        if(!this.map.has(name)) {
-            this.map.set(name, []);
-        }
-        this.map.get(name).push(fn);
-    }
-
-    $off(name, fn) {
-        if(this.map.has(name)){
-            this.map.get(name)?.filter(i => i !== fn);
-        }
-    }
-
-    $emit(name, ...args) {
-        if(this.map.has(name)) {
-            this.map.get(name).forEach(fn => fn(...args));
-        }
-    }
+const isContaiNum = (num) => {
+    return num % 7 === 0 && num !== 0;
 }
 
-let bus = new EventEmitter();
-function test1 () {
-    console.log('test 1');
-}
-bus.$on('test', test1)
-bus.$on('test', (a) => {
-    console.log('test 2 ' + a)
-})
-bus.$off('test', test1)
-bus.$emit('test', 'aaa');
+console.log(isContaiNum(7)); // true
+console.log(isContaiNum(14)); // true
+console.log(isContaiNum(10)); // false
+console.log(isContaiNum(0)); // false
