@@ -1,4 +1,5 @@
 # 实现 instanceof
+instanceof 可以用来判断继承关系，实现一个 myInstanceof 函数用来判断两个对象之间是否有继承关系
 
 ## 测试用例
 ```javascript
