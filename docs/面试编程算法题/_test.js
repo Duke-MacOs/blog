@@ -1,8 +1,15 @@
-const isContaiNum = (num) => {
-    return num % 7 === 0 && num !== 0;
+const parseURL = (url) => {
+    const o = new URL(url);
+    const search = {};
+    for(let [key, value] of o.searchParams.entries()) {
+        search[key] = value;
+    }
+    return {
+        domain: o.host,
+        pathname: o.pathname,
+        search
+    }
 }
 
-console.log(isContaiNum(7)); // true
-console.log(isContaiNum(14)); // true
-console.log(isContaiNum(10)); // false
-console.log(isContaiNum(0)); // false
+const url = 'https://segmentfault.com/a/1190000012113011?utm_source=tag-newest&name=Duke#123';
+console.log(parseURL(url));
