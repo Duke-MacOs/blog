@@ -1,69 +1,43 @@
-const _formatFun = (formatter) => {
-    if(typeof formatter === 'function') return formatter;
-    if(typeof formatter !== 'string') throw new Error('参数错误');
+const treeSum = (root) => {
+    const arr = [];
 
-    if(formatter === 'date') formatter = 'yyyy-mm-dd';
-    if(formatter === 'datetime') formatter = 'yyyy-MM-dd HH:mm:ss';
+    const _bfs = (prev, node) => {
+        if(node.left) {
+            _bfs(prev + node.val, node.left)
+        }
+        if(node.right) {
+            _bfs(prev + node.val, node.right);
+        }
+        if(node.left === null && node.right === null) {
+            arr.push(prev + node.val);
+        }
+    }
+    _bfs('', root);
+    return arr.reduce((prev, current) => {
+        return prev + Number(current);
+    }, 0);
+}
 
-    return (date) => { 
-        const {yyyy, MM, dd, HH, mm, ss, ms} = date;
-
-        return formatter
-        .replaceAll('yyyy', yyyy)
-        .replaceAll('MM', MM)
-        .replaceAll('dd', dd)
-        .replaceAll('HH', HH)
-        .replaceAll('mm', mm)
-        .replaceAll('ss', ss)
-        .replaceAll('ms', ss)
+const root = {
+    val: 1,
+    left: {
+        val: 2,
+        left: {
+            val: 4,
+            left: null,
+            right: null
+        },
+        right: {
+            val: 5,
+            left: null,
+            right: null
+        }
+    },
+    right: {
+        val: 3,
+        left: null,
+        right: null
     }
 }
 
-const formate = (date, formatter, isPad) => {
-    formatter = _formatFun(formatter);
-    const _date = {
-        year: date.getFullYear(),
-        month: date.getMonth() + 1,
-        date: date.getDate(),
-        hour: date.getHours(),
-        minute: date.getMinutes(),
-        second: date.getSeconds(),
-        miniSecond: date.getMilliseconds()
-    }
-    _date.yyyy = _date.year.toString();
-    _date.MM = _date.month.toString();
-    _date.dd = _date.date.toString();
-    _date.HH = _date.hour.toString();
-    _date.mm = _date.minute.toString();
-    _date.ss = _date.second.toString();
-    _date.ms = _date.miniSecond.toString();
-    const _pad = (prop, len) => {
-        _date[prop] = _date[prop].padStart(len, '0')
-    }
-    if(isPad) {
-        _pad('yyyy', 4);
-        _pad('MM', 2);
-        _pad('dd', 2);
-        _pad('HH', 2);
-        _pad('mm', 2);
-        _pad('ss', 2);
-        _pad('ms', 3);
-    }
-    console.log(formatter(_date, formatter))
-    return formatter(_date, formatter);
-}
-
-// 2023-4-6
-formate(new Date(), 'date');
-
-// 2023-4-6 14:7:41
-formate(new Date(), 'datetime');
-
-// 2023-04-06
-formate(new Date(), 'date', true);
-
-// 2023-04-06 14:7:41
-formate(new Date(), 'datetime', true);
-
-// 2023年4月6号 14:7:41.336
-formate(new Date(), 'yyyy年MM月dd日 HH:mm:ss.ms');
+console.log(treeSum(root)); // 262
